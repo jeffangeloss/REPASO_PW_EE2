@@ -3,9 +3,9 @@
 # API que convierte valores entre unidades (temperatura, distancia, peso) y guarda un
 # historial temporal en memoria.
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Optional
 from uuid import uuid4
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 # Llama tu router!
@@ -145,4 +145,27 @@ async def filtrarHistorialCategory(category: str):
     return{
         "msg" : "",
         "data" : historial_filtrado
+    }
+    
+# 3. GET /history
+# - Query params:
+# - category: str | null
+# - min_value: float | null
+# - Filtra historial.
+@router.get("/history")
+async def getFiltroHistory(
+    category: Optional[str] = Query(default = None),
+    min_value: Optional[float] = Query(default = None)
+):
+    filtrado_x_categoria: list[Conversion] = []
+    for conversion in history_conversion:
+        if category is not None and conversion.category != category:
+            continue
+        if min_value is not None and conversion.value < min_value:
+            continue
+        filtrado_x_categoria.append(conversion)
+
+    return {
+        "msg": "",
+        "data" : filtrado_x_categoria
     }
