@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from router import ejercicio1
+from router import ejercicio1, ejercicio2
 
 app = FastAPI()
 
@@ -13,3 +13,4 @@ async def root():
     }
 
 app.include_router(ejercicio1.router)
+app.include_router(ejercicio2.router)

@@ -1,14 +1,17 @@
+# Ejercicio 1: Gestor de tareas (To-Do) en memoria
+# Una mini API para gestionar tareas de una lista (sin persistencia).
+
 # Endpoints requeridos
 # 1. POST /tasks
 # 2. GET /tasks/{task_id}
 # 3. GET /tasks
 # 4. PATCH /tasks/{tasks_id}/complete
-
 from typing import Optional
 from uuid import uuid4
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
+# Llama tu router!
 router = APIRouter(
     prefix = "",
     tags = ["Ejercicio1"]
@@ -74,7 +77,6 @@ tasks_repertory : dict[str,Task] = {
     )
 }
 
-
 @router.post("/tasks")
 async def createTasks(payload: TasksCreate):
     task_id = str(uuid4()) # Creación del id
@@ -96,7 +98,6 @@ async def createTasks(payload: TasksCreate):
 # 2. GET /tasks/{task_id}
 # - Path param: task_id
 # - Devuelve la tarea o 404.
-
 @router.get("/tasks/{task_id}") # por path param
 async def getTask(task_id: str):
     task = tasks_repertory.get(task_id) # buscaremos si está el id en todo nuestro repertorio
